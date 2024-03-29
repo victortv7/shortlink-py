@@ -1,0 +1,22 @@
+# Alembic Migrations
+
+This folder contains database migration scripts for the project using Alembic.
+
+## Getting Started
+
+To apply the migrations, follow these steps:
+
+1. Make sure you have the necessary database connection details in your project configuration.
+2. Run the following command to apply the migrations:
+
+    ```shell
+    alembic upgrade head
+    ```
+
+## Creating a New Migration
+
+To create a new migration, use the following command:
+
+    ```
+    alembic revision --autogenerate -m "migration name"
+    ```
