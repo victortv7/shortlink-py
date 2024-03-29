@@ -27,6 +27,7 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_urls_id'), 'urls', ['id'], unique=False)
+    op.execute("SELECT setval('urls_id_seq', 100000000, false)")
     # ### end Alembic commands ###
 
 

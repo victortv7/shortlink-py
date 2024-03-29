@@ -1,6 +1,6 @@
 .PHONY: all setup run clean test lint db-up db-down db-migrate
 
-VENV_NAME?=venv
+VENV_NAME?=env
 PYTHON=${VENV_NAME}/bin/python
 PIP=${VENV_NAME}/bin/pip
 APP_DIR=src/app
@@ -30,7 +30,7 @@ clean:
 
 ### Database management
 
-DB_CONTAINER_NAME=myapp-postgres
+DB_CONTAINER_NAME=shortlink-postgres
 DB_PASSWORD=password
 DB_PORT=5432
 DB_NAME=db
@@ -53,3 +53,24 @@ db-down:
 # Run Alembic migrations
 db-migrate: db-up setup
 	cd src && alembic upgrade head && cd ..
+
+
+### Redis
+
+REDIS_CONTAINER_NAME=shortlink-redis
+REDIS_PORT=6379
+
+# Start Redis container using the official image
+redis-up:
+	@if [ -z "$$(docker ps -q -f name=$(REDIS_CONTAINER_NAME))" ]; then \
+		echo "Starting Redis container..."; \
+		docker pull redis:latest; \
+		docker run --name $(REDIS_CONTAINER_NAME) -p $(REDIS_PORT):6379 -d redis; \
+		sleep 5; \
+	else \
+		echo "Redis container $(REDIS_CONTAINER_NAME) is already running."; \
+	fi
+
+# Stop and remove the Redis container
+redis-down:
+	docker stop $(REDIS_CONTAINER_NAME) && docker rm $(REDIS_CONTAINER_NAME)
