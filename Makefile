@@ -1,4 +1,4 @@
-.PHONY: all setup run clean test lint db-up db-down db-migrate
+.PHONY: all setup run clean test lint db-up db-down db-migrate redis-up redis-down
 
 VENV_NAME?=env
 PYTHON=${VENV_NAME}/bin/python
@@ -27,6 +27,8 @@ clean:
 	find . -type f -name '*.pyo' -delete
 	find . -type d -name '__pycache__' -exec rm -rf {} +
 
+test:
+	$(PYTHON) -m pytest tests
 
 ### Database management
 
