@@ -26,7 +26,6 @@ async def redirect_to_long_url(short_link: str, db: AsyncSession = Depends(async
         long_url = await get_long_url(db, short_link)
         await increment_access_count(db, short_link)
         return RedirectResponse(url=long_url)
-    # TODO: Handle the case where the short link is not found
     except NoResultFound as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Short link not found")
     except Exception as e:
