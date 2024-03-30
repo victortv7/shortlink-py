@@ -13,4 +13,4 @@ async def async_get_redis() -> AsyncGenerator[redis.Redis, None]:
     try:
         yield session
     finally:
-        await session.close()
+        await session.aclose()

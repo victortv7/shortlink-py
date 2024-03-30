@@ -1,4 +1,4 @@
-.PHONY: all setup run clean test lint db-up db-down db-migrate redis-up redis-down
+.PHONY: all setup run clean test test-coverage lint db-up db-down db-migrate redis-up redis-down
 
 VENV_NAME?=env
 PYTHON=${VENV_NAME}/bin/python
@@ -29,6 +29,15 @@ clean:
 
 test:
 	$(PYTHON) -m pytest tests
+
+test-coverage:
+	$(PYTHON) -m coverage run --source=src -m pytest tests
+	$(PYTHON) -m coverage report -m
+	$(PYTHON) -m coverage html
+	@echo "Coverage report generated in 'htmlcov/index.html'"
+
+lint:
+	$(PYTHON) -m pylint src
 
 ### Database management
 
