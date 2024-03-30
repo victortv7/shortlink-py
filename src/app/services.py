@@ -21,7 +21,7 @@ async def create_short_link(long_url: str, db: AsyncSession, redis: Redis) -> st
 
 
 async def get_long_url(short_link: str, db: AsyncSession, redis: Redis) -> str:
-    # Try to get the long URL from Redis
+    # Try to find the short link in Redis
     long_url = await redis.get(f"{REDIS_SHORTLINK_PREFIX}{short_link}")
     if long_url:
         return long_url
