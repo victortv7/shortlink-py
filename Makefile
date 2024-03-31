@@ -28,13 +28,19 @@ clean:
 	find . -type d -name '__pycache__' -exec rm -rf {} +
 
 test:
-	$(PYTHON) -m pytest tests
+	$(PYTHON) -m pytest tests/unit
 
 test-coverage:
-	$(PYTHON) -m coverage run --source=src -m pytest tests
+	$(PYTHON) -m coverage run --source=src -m pytest tests/unit
 	$(PYTHON) -m coverage report -m
 	$(PYTHON) -m coverage html
 	@echo "Coverage report generated in 'htmlcov/index.html'"
+
+test-integration:
+	docker-compose -f docker-compose.test.yml down
+	docker-compose -f docker-compose.test.yml build test-app
+	docker-compose -f docker-compose.test.yml run --rm test-app
+	docker-compose -f docker-compose.test.yml down
 
 lint:
 	$(PYTHON) -m pylint src
