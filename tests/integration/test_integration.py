@@ -9,6 +9,12 @@ from sqlalchemy.exc import NoResultFound
 
 
 @pytest.mark.asyncio
+async def test_health():
+    async with AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://localhost") as ac:
+        response = await ac.get("/health")
+        assert response.status_code == 200
+
+@pytest.mark.asyncio
 async def test_create_short_link():
     async with AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://localhost") as ac:
         test_long_url = "https://example.com"

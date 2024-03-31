@@ -10,6 +10,10 @@ from .services import create_short_link, get_long_url, get_link_stats, increment
 
 router = APIRouter()
 
+@router.get("/health")
+async def health_check():
+    return {"status": "ok"}
+
 @router.post("/create", response_model=CreateLinkResponse)
 async def create_short_link_endpoint(request: CreateLinkRequest, db: AsyncSession = Depends(async_get_db), redis: Redis = Depends(async_get_redis)):
     try:

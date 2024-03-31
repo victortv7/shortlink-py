@@ -51,6 +51,11 @@ services:
       - .:/app
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 5s
+      timeout: 2s
+      retries: 2
 
 networks:
   app-network:
