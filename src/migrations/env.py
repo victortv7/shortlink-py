@@ -22,7 +22,7 @@ fileConfig(config.config_file_name)
 
 # add your model's MetaData object here
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 from src.app.models import Base
 from src.app.core.config import settings
 

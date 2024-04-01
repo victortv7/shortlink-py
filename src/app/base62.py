@@ -1,6 +1,6 @@
-
-
-BASE62_ALPHABET = tuple("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+BASE62_ALPHABET = tuple(
+    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+)
 BASE62_LEN = 62
 BASE62_DICT = dict((c, v) for v, c in enumerate(BASE62_ALPHABET))
 
@@ -14,6 +14,7 @@ def encode(num: int) -> str:
         num, rem = divmod(num, BASE62_LEN)
         encoding = BASE62_ALPHABET[rem] + encoding
     return encoding
+
 
 def decode(base62_str: str) -> int:
     num = 0

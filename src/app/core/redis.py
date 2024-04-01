@@ -2,6 +2,7 @@ from typing import AsyncGenerator
 import redis.asyncio as redis
 from .config import settings
 
+
 async def async_get_redis() -> AsyncGenerator[redis.Redis, None]:
     session = redis.Redis(
         host=settings.REDIS_HOST,

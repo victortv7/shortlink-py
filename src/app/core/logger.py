@@ -13,20 +13,21 @@ LOG_FILE_PATH = os.path.join(LOG_DIR, "app.log")
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        RotatingFileHandler(LOG_FILE_PATH, maxBytes=10485760, backupCount=5)
-    ]
+        RotatingFileHandler(LOG_FILE_PATH, maxBytes=10485760, backupCount=5),
+    ],
 )
+
 
 def get_logger(name: str):
     logger = logging.getLogger(name)
 
-    if settings.ENVIRONMENT == 'PRODUCTION':
+    if settings.ENVIRONMENT == "PRODUCTION":
         logger.setLevel(logging.WARNING)
-    elif settings.ENVIRONMENT == 'STAGING':
+    elif settings.ENVIRONMENT == "STAGING":
         logger.setLevel(logging.INFO)
     else:  # Development and other environments
         logger.setLevel(logging.DEBUG)
