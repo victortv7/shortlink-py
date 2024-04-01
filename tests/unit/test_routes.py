@@ -8,6 +8,12 @@ from src.app.schemas import CreateLinkResponse, LinkStatsResponse
 from sqlalchemy.exc import NoResultFound
 
 @pytest.mark.asyncio
+async def test_get_health():
+    async with AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as ac:
+        response = await ac.get("/health")
+        assert response.status_code == 200
+
+@pytest.mark.asyncio
 async def test_create_short_link_success():
     async with AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as ac:
         test_long_url = "https://example.com"

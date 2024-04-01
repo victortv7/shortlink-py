@@ -37,13 +37,31 @@ services:
     command: >
       bash -c "
         cd src && alembic upgrade head && cd .. &&
-        pytest tests/integration
+        uvicorn src.app.main:app --host 0.0.0.0 --port 8080
       "
     environment:
       - DB_HOST=test-db
       - REDIS_HOST=test-redis
     volumes:
       - .:/app
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 5s
+      timeout: 2s
+      retries: 2
+  test-runner:
+    build: .
+    command: pytest tests/integration
+    environment:
+      - APP_HOST=test-app
+      - APP_PORT=8080
+    volumes:
+      - .:/app
+    depends_on:
+      test-app:
+        condition: service_healthy
     networks:
       - test-network
 

@@ -38,9 +38,12 @@ test-coverage:
 
 test-integration:
 	docker-compose -f docker-compose.test.yml down
-	docker-compose -f docker-compose.test.yml build test-app
-	docker-compose -f docker-compose.test.yml run --rm test-app
-	docker-compose -f docker-compose.test.yml down
+	docker-compose -f docker-compose.test.yml build
+	# Run tests and capture the exit code
+	-docker-compose -f docker-compose.test.yml run --rm test-runner
+	@exit_code=$$?; \
+	docker-compose -f docker-compose.test.yml down; \
+	exit $$exit_code
 
 lint:
 	$(PYTHON) -m pylint src
