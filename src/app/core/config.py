@@ -1,5 +1,8 @@
 from pydantic_settings import BaseSettings
 from enum import Enum
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv(".env"))
 
 
 class EnvironmentOption(str, Enum):
