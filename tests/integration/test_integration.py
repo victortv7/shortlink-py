@@ -1,6 +1,6 @@
 import os
 import httpx
-from src.app.base62 import encode, decode
+from src.app.base62 import encode
 
 
 class TestIntegration:

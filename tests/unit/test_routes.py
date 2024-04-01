@@ -1,10 +1,8 @@
 import httpx
 import pytest
 from httpx import AsyncClient
-from fastapi import FastAPI
 from unittest.mock import patch, ANY
 from src.app.main import app
-from src.app.schemas import CreateLinkResponse, LinkStatsResponse
 from sqlalchemy.exc import NoResultFound
 
 
@@ -71,15 +69,12 @@ async def test_redirect_to_long_url_found():
 
         with patch(
             "src.app.routes.get_long_url", return_value=test_long_url
-        ) as mock_get_long_url, patch(
-            "src.app.routes.increment_access_count"
-        ) as mock_increment_access_count:
+        ) as mock_get_long_url:
             response = await ac.get(f"/{test_short_link}")
             print(f"Response text: {response.text}")
             assert response.status_code == 307
             assert response.headers["Location"] == test_long_url
-            mock_get_long_url.assert_awaited_once_with(test_short_link, ANY, ANY)
-            mock_increment_access_count.assert_awaited_once_with(test_short_link, ANY)
+            mock_get_long_url.assert_awaited_once_with(test_short_link, ANY, ANY, ANY)
 
 
 @pytest.mark.asyncio

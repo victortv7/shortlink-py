@@ -45,12 +45,13 @@ async def test_create_short_link():
 async def test_get_long_url_found_in_redis():
     short_link = "short123"
     long_url = "https://example.com"
+    bt_mock = AsyncMock()
 
     db_mock = AsyncMock()
     redis_mock = AsyncMock()
     redis_mock.get = AsyncMock(return_value=long_url)
 
-    result = await get_long_url(short_link, db_mock, redis_mock)
+    result = await get_long_url(short_link, db_mock, redis_mock, bt_mock)
 
     assert result == long_url
     redis_mock.get.assert_awaited_with(f"shortlink:{short_link}")
@@ -63,6 +64,8 @@ async def test_get_long_url_found_in_db():
     id = decode(short_link)
     expected_long_url = "https://example.com"
 
+    bt_mock = AsyncMock()
+
     redis_mock = AsyncMock()
     redis_mock.get = AsyncMock(return_value=None)
 
@@ -73,7 +76,7 @@ async def test_get_long_url_found_in_db():
     db_mock.execute = AsyncMock(return_value=mock_result)
     db_mock.commit = AsyncMock()
 
-    actual_long_url = await get_long_url(short_link, db_mock, redis_mock)
+    actual_long_url = await get_long_url(short_link, db_mock, redis_mock, bt_mock)
 
     assert actual_long_url == expected_long_url
     db_mock.execute.assert_awaited_once()
@@ -84,6 +87,7 @@ async def test_get_long_url_found_in_db():
 async def test_get_long_url_not_found():
     db_mock = AsyncMock()
     redis_mock = AsyncMock()
+    bt_mock = AsyncMock()
     short_link = "nonexistent123"
 
     redis_mock.get = AsyncMock(return_value=None)
@@ -92,7 +96,7 @@ async def test_get_long_url_not_found():
     db_mock.execute = AsyncMock(return_value=mock_result)
 
     with pytest.raises(NoResultFound):
-        await get_long_url(short_link, db_mock, redis_mock)
+        await get_long_url(short_link, db_mock, redis_mock, bt_mock)
 
 
 @pytest.mark.asyncio

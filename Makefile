@@ -46,7 +46,7 @@ test-integration:
 	exit $$exit_code
 
 lint:
-	$(PYTHON) -m flake8 src
+	$(PYTHON) -m flake8 src tests
 
 fmt:
 	$(PYTHON) -m black src tests

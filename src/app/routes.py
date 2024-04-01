@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound
@@ -10,7 +10,6 @@ from .services import (
     create_short_link,
     get_long_url,
     get_link_stats,
-    increment_access_count,
 )
 
 router = APIRouter()
@@ -40,12 +39,13 @@ async def create_short_link_endpoint(
 @router.get("/{short_link}", response_class=RedirectResponse)
 async def redirect_to_long_url(
     short_link: str,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(async_get_db),
     redis: Redis = Depends(async_get_redis),
 ):
     try:
-        long_url = await get_long_url(short_link, db, redis)
-        await increment_access_count(short_link, db)
+        long_url = await get_long_url(short_link, db, redis, background_tasks)
+        # await increment_access_count(short_link, db)
         return RedirectResponse(url=long_url)
     except NoResultFound:
         raise HTTPException(
