@@ -56,7 +56,7 @@ make test
 make test-coverage
 ```
 
-Run integration tests:
+Run integration tests (requires Docker Compose):
 
 ```bash
 make test-integration

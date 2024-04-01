@@ -19,8 +19,8 @@ htmlcov/
 nosetests.xml
 coverage.xml
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# Logs
+*.log
 
 # Environment
 .env

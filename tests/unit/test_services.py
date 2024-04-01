@@ -20,7 +20,7 @@ async def test_create_short_link():
     redis_mock.set = AsyncMock()
 
     db_mock = AsyncMock()
-    db_mock.add = AsyncMock()
+    db_mock.add = MagicMock()
     db_mock.commit = AsyncMock()
 
     async def custom_refresh(url_obj):
@@ -45,7 +45,7 @@ async def test_create_short_link():
 async def test_get_long_url_found_in_redis():
     short_link = "short123"
     long_url = "https://example.com"
-    bt_mock = AsyncMock()
+    bt_mock = MagicMock()
 
     db_mock = AsyncMock()
     redis_mock = AsyncMock()
@@ -64,7 +64,7 @@ async def test_get_long_url_found_in_db():
     id = decode(short_link)
     expected_long_url = "https://example.com"
 
-    bt_mock = AsyncMock()
+    bt_mock = MagicMock()
 
     redis_mock = AsyncMock()
     redis_mock.get = AsyncMock(return_value=None)
@@ -87,7 +87,7 @@ async def test_get_long_url_found_in_db():
 async def test_get_long_url_not_found():
     db_mock = AsyncMock()
     redis_mock = AsyncMock()
-    bt_mock = AsyncMock()
+    bt_mock = MagicMock()
     short_link = "nonexistent123"
 
     redis_mock.get = AsyncMock(return_value=None)

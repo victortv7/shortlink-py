@@ -28,7 +28,7 @@ async def test_create_short_link_success():
         ) as mock_service:
             response = await ac.post("/create", json={"long_url": test_long_url})
 
-            assert response.status_code == 200
+            assert response.status_code == 201
             assert response.json() == {"short_link": test_short_link}
             mock_service.assert_awaited_once()
 

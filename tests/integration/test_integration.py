@@ -27,7 +27,7 @@ class TestIntegration:
         response = httpx.post(
             f"{self.APP_URL}/create", json={"long_url": test_long_url}
         )
-        assert response.status_code == 200
+        assert response.status_code == 201
         assert response.json() == {"short_link": expected_short_link}
 
         TestIntegration.current_id += 1
@@ -38,7 +38,7 @@ class TestIntegration:
         create_response = httpx.post(
             f"{self.APP_URL}/create", json={"long_url": test_long_url}
         )
-        assert create_response.status_code == 200
+        assert create_response.status_code == 201
         TestIntegration.current_id += 1
 
         short_link = create_response.json()["short_link"]
@@ -53,7 +53,7 @@ class TestIntegration:
         create_response = httpx.post(
             f"{self.APP_URL}/create", json={"long_url": test_long_url}
         )
-        assert create_response.status_code == 200
+        assert create_response.status_code == 201
         TestIntegration.current_id += 1
 
         short_link = create_response.json()["short_link"]
