@@ -46,7 +46,10 @@ test-integration:
 	exit $$exit_code
 
 lint:
-	$(PYTHON) -m pylint src
+	$(PYTHON) -m flake8 src
+
+fmt:
+	$(PYTHON) -m black src tests
 
 ### Database management
 
